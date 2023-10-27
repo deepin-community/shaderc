@@ -1,0 +1,24 @@
+#!/bin/bash
+
+set -e
+
+cd $AUTOPKGTEST_TMP
+
+dummy_source=dummy.c
+dummy_binary=dummy
+
+# From https://github.com/Homebrew/homebrew-core/blob/HEAD/Formula/shaderc.rb:
+cat > $dummy_source <<EOF
+#include <shaderc/shaderc.h>
+int main() {
+    int version;
+    shaderc_profile profile;
+    if (!shaderc_parse_version_profile("450core", &version, &profile))
+        return 1;
+    return (profile == shaderc_profile_core) ? 0 : 1;
+}
+EOF
+
+g++ -o $dummy_binary $dummy_source $(pkg-config --libs --cflags shaderc glslang spirv)
+test -x $dummy_binary
+./$dummy_binary

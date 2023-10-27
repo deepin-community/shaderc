@@ -1,0 +1,3 @@
+use-system-thirdparties.patch
+fix-manpage.patch
+rename-libshaderc.patch
