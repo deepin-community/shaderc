@@ -1,0 +1,23 @@
+#!/bin/bash
+
+set -e
+
+cd $AUTOPKGTEST_TMP
+
+dummy_in=dummy.vert
+dummy_out=${dummy_in}.spv
+
+# From glslc/test/pragma_shader_stage.py:
+cat > $dummy_in <<EOF
+#version 310 es
+#pragma shader_stage(vertex)
+void main() {
+    gl_Position = vec4(1.);
+}
+EOF
+
+glslc -c $dummy_in
+test -f $dummy_out
+
+# do not compare whole file output, since it contains version-specific values
+[[ "$(file $dummy_out)" == "$dummy_out: Khronos SPIR-V binary"* ]]

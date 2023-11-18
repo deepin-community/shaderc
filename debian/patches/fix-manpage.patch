@@ -1,0 +1,22 @@
+From: Philippe SWARTVAGHER <phil.swart@gmx.fr>
+Date: Tue, 13 Sep 2022 22:13:11 +0200
+Subject: Fix manpage generation
+
+Forwarded: https://github.com/google/shaderc/issues/1266
+Last-Update: 2022-09-11
+
+Last-Update: 2022-09-11
+---
+ glslc/README.asciidoc | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/glslc/README.asciidoc b/glslc/README.asciidoc
+index 9b754b8..a0afa41 100644
+--- a/glslc/README.asciidoc
++++ b/glslc/README.asciidoc
+@@ -1,4 +1,4 @@
+-= glslc Manual
++= glslc(1)
+ :toc:
+ :toclevels: 3
+ :numbered:

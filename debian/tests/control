@@ -1,0 +1,5 @@
+Tests: glslc
+Depends: glslc, file
+
+Tests: lib
+Depends: libshaderc-dev, @builddeps@
