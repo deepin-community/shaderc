@@ -1,0 +1,111 @@
+From: Philippe SWARTVAGHER <phil.swart@gmx.fr>
+Date: Sat, 8 Oct 2022 23:14:53 +0200
+Subject: Rename libshaderc_shared.so into libshaderc.so
+
+To avoid triggering the lintian warning package-name-doesnt-match-sonames
+---
+ CMakeLists.txt            |  2 +-
+ libshaderc/CMakeLists.txt | 30 +++++++++++++++---------------
+ 2 files changed, 16 insertions(+), 16 deletions(-)
+
+diff --git a/CMakeLists.txt b/CMakeLists.txt
+index 42560f4..0a67615 100644
+--- a/CMakeLists.txt
++++ b/CMakeLists.txt
+@@ -167,6 +167,6 @@ function(define_pkg_config_file NAME LIBS)
+   endif()
+ endfunction()
+ 
+-define_pkg_config_file(shaderc -lshaderc_shared)
++define_pkg_config_file(shaderc -lshaderc)
+ define_pkg_config_file(shaderc_static "-lshaderc ${EXTRA_STATIC_PKGCONFIG_LIBS} -lshaderc_util")
+ define_pkg_config_file(shaderc_combined -lshaderc_combined)
+diff --git a/libshaderc/CMakeLists.txt b/libshaderc/CMakeLists.txt
+index 2cced9e..72f8846 100644
+--- a/libshaderc/CMakeLists.txt
++++ b/libshaderc/CMakeLists.txt
+@@ -24,24 +24,24 @@ set(SHADERC_SOURCES
+   src/shaderc_private.h
+ )
+ 
+-add_library(shaderc STATIC ${SHADERC_SOURCES})
+-shaderc_default_compile_options(shaderc)
+-target_include_directories(shaderc
++add_library(shaderc_static STATIC ${SHADERC_SOURCES})
++shaderc_default_compile_options(shaderc_static)
++target_include_directories(shaderc_static
+     PUBLIC include
+     PRIVATE ${glslang_SOURCE_DIR}
+             ${SPIRV-Headers_SOURCE_DIR}/include)
+ 
+-add_library(shaderc_shared SHARED ${SHADERC_SOURCES})
+-shaderc_default_compile_options(shaderc_shared)
+-target_include_directories(shaderc_shared
++add_library(shaderc SHARED ${SHADERC_SOURCES})
++shaderc_default_compile_options(shaderc)
++target_include_directories(shaderc
+     PUBLIC include
+     PRIVATE ${glslang_SOURCE_DIR}
+             ${SPIRV-Headers_SOURCE_DIR}/include)
+-target_compile_definitions(shaderc_shared
++target_compile_definitions(shaderc
+     PRIVATE SHADERC_IMPLEMENTATION
+     PUBLIC SHADERC_SHAREDLIB
+ )
+-set_target_properties(shaderc_shared PROPERTIES SOVERSION 1)
++set_target_properties(shaderc PROPERTIES SOVERSION 1)
+ 
+ if(SHADERC_ENABLE_INSTALL)
+   install(
+@@ -54,7 +54,7 @@ if(SHADERC_ENABLE_INSTALL)
+     DESTINATION
+       ${CMAKE_INSTALL_INCLUDEDIR}/shaderc)
+ 
+-  install(TARGETS shaderc shaderc_shared
++  install(TARGETS shaderc_static shaderc
+     LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR}
+     RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR}
+     BUNDLE DESTINATION ${CMAKE_INSTALL_BINDIR}
+@@ -69,12 +69,12 @@ set(SHADERC_LIBS
+   SPIRV-Tools
+ )
+ 
++target_link_libraries(shaderc_static PRIVATE ${SHADERC_LIBS})
+ target_link_libraries(shaderc PRIVATE ${SHADERC_LIBS})
+-target_link_libraries(shaderc_shared PRIVATE ${SHADERC_LIBS})
+ 
+ shaderc_add_tests(
+   TEST_PREFIX shaderc
+-  LINK_LIBS shaderc
++  LINK_LIBS shaderc_static
+   INCLUDE_DIRS include ${shaderc_SOURCE_DIR}/libshaderc_util/include ${glslang_SOURCE_DIR}
+                ${spirv-tools_SOURCE_DIR}/include
+                ${SPIRV-Headers_SOURCE_DIR}/include
+@@ -84,8 +84,8 @@ shaderc_add_tests(
+     shaderc_private)
+ 
+ shaderc_add_tests(
+-  TEST_PREFIX shaderc_shared
+-  LINK_LIBS shaderc_shared SPIRV-Tools
++  TEST_PREFIX shaderc
++  LINK_LIBS shaderc SPIRV-Tools
+   INCLUDE_DIRS include ${shaderc_SOURCE_DIR}/libshaderc_util/include ${glslang_SOURCE_DIR}
+                ${spirv-tools_SOURCE_DIR}/include
+                ${SPIRV-Headers_SOURCE_DIR}/include
+@@ -94,7 +94,7 @@ shaderc_add_tests(
+     shaderc_cpp
+     shaderc_private)
+ 
+-shaderc_combine_static_lib(shaderc_combined shaderc)
++shaderc_combine_static_lib(shaderc_combined shaderc_static)
+ 
+ if(SHADERC_ENABLE_INSTALL)
+   # Since shaderc_combined is defined as an imported library, we cannot use the
+@@ -127,6 +127,6 @@ if(${SHADERC_ENABLE_TESTS})
+   add_executable(shaderc_c_smoke_test ./src/shaderc_c_smoke_test.c)
+   shaderc_default_c_compile_options(shaderc_c_smoke_test)
+   target_include_directories(shaderc_c_smoke_test PUBLIC ${shaderc_SOURCE_DIR}/libshaderc_util/include)
+-  target_link_libraries(shaderc_c_smoke_test PRIVATE shaderc)
++  target_link_libraries(shaderc_c_smoke_test PRIVATE shaderc_static)
+   add_test(NAME shaderc_c_smoke_test COMMAND shaderc_c_smoke_test)
+ endif()

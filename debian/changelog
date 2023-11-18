@@ -1,5 +1,22 @@
-template-repository (1.0-1) unstable; urgency=medium
+shaderc (2023.2-1) unstable; urgency=medium
 
-  * Initial release
+  * New upstream release
+  * Refresh patches (probably required by the raise of cmake required version)
+  * Bump Standards-Version to 4.6.2: no change needed
 
- -- Tsic404 <liuheng@deepin.org>  Sat, 28 Jan 2023 13:46:49 +0800
+ -- Philippe SWARTVAGHER <phil.swart@gmx.fr>  Sun, 22 Jan 2023 13:21:24 +0100
+
+shaderc (2022.4-1) unstable; urgency=medium
+
+  * New upstream release
+    - Closes: #1027045
+    - Refresh debian/patches/rename-libshaderc.patch
+    - Fix test glslc to ignore version-specific content
+
+ -- Philippe SWARTVAGHER <phil.swart@gmx.fr>  Mon, 26 Dec 2022 23:02:13 +0100
+
+shaderc (2022.2-1) unstable; urgency=medium
+
+  * Initial release. (Closes: #890472)
+
+ -- Philippe SWARTVAGHER <phil.swart@gmx.fr>  Sun, 04 Sep 2022 22:19:40 +0200
