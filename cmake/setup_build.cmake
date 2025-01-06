@@ -49,7 +49,7 @@ if (ANDROID)
 find_host_package(PythonInterp 3 REQUIRED)
 find_host_package(BISON)
 else()
-find_package(PythonInterp 3 REQUIRED)
+  find_package(Python COMPONENTS Interpreter REQUIRED)
 endif()
 
 option(DISABLE_RTTI "Disable RTTI in builds")

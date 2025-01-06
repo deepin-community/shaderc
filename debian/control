@@ -6,12 +6,12 @@ Rules-Requires-Root: no
 Build-Depends:
  debhelper-compat (= 13),
  spirv-headers,
- pkg-config,
+ pkgconf,
  cmake,
  asciidoctor,
  glslang-dev,
  ruby-pygments.rb,
-Standards-Version: 4.6.2
+Standards-Version: 4.7.0
 Homepage: https://github.com/google/shaderc/
 Vcs-Browser: https://salsa.debian.org/debian/shaderc
 Vcs-Git: https://salsa.debian.org/debian/shaderc.git
@@ -21,6 +21,7 @@ Section: libdevel
 Architecture: any
 Multi-Arch: foreign
 Depends: ${shlibs:Depends}, ${misc:Depends}
+Built-Using: ${built-using}
 Description: Command line compiler for GLSL/HLSL to SPIR-V
  glslc wraps around core functionality in glslang and SPIRV-Tools. glslc and
  its library aims to provide:
@@ -42,6 +43,7 @@ Depends:
  ${misc:Depends},
  glslang-dev,
  spirv-headers,
+Built-Using: ${built-using}
 Description: Library API for accessing glslc functionality - static libraries and headers
  glslc wraps around core functionality in glslang and SPIRV-Tools. glslc and
  its library aims to provide:
@@ -60,6 +62,7 @@ Multi-Arch: same
 Depends:
  ${shlibs:Depends},
  ${misc:Depends},
+Built-Using: ${built-using}
 Description: Library API for accessing glslc functionality - shared libraries
  glslc wraps around core functionality in glslang and SPIRV-Tools. glslc and
  its library aims to provide:

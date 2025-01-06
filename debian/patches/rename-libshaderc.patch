@@ -2,6 +2,9 @@ From: Philippe SWARTVAGHER <phil.swart@gmx.fr>
 Date: Sat, 8 Oct 2022 23:14:53 +0200
 Subject: Rename libshaderc_shared.so into libshaderc.so
 
+Forwarded: not-needed
+Last-Update: 2024-05-25
+
 To avoid triggering the lintian warning package-name-doesnt-match-sonames
 ---
  CMakeLists.txt            |  2 +-
@@ -9,10 +12,10 @@ To avoid triggering the lintian warning package-name-doesnt-match-sonames
  2 files changed, 16 insertions(+), 16 deletions(-)
 
 diff --git a/CMakeLists.txt b/CMakeLists.txt
-index 42560f4..0a67615 100644
+index 771eb5d..e8794a8 100644
 --- a/CMakeLists.txt
 +++ b/CMakeLists.txt
-@@ -167,6 +167,6 @@ function(define_pkg_config_file NAME LIBS)
+@@ -161,6 +161,6 @@ function(define_pkg_config_file NAME LIBS)
    endif()
  endfunction()
  
@@ -21,7 +24,7 @@ index 42560f4..0a67615 100644
  define_pkg_config_file(shaderc_static "-lshaderc ${EXTRA_STATIC_PKGCONFIG_LIBS} -lshaderc_util")
  define_pkg_config_file(shaderc_combined -lshaderc_combined)
 diff --git a/libshaderc/CMakeLists.txt b/libshaderc/CMakeLists.txt
-index 2cced9e..72f8846 100644
+index 1f89da4..0a14bee 100644
 --- a/libshaderc/CMakeLists.txt
 +++ b/libshaderc/CMakeLists.txt
 @@ -24,24 +24,24 @@ set(SHADERC_SOURCES
@@ -66,7 +69,7 @@ index 2cced9e..72f8846 100644
      LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR}
      RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR}
      BUNDLE DESTINATION ${CMAKE_INSTALL_BINDIR}
-@@ -69,12 +69,12 @@ set(SHADERC_LIBS
+@@ -72,12 +72,12 @@ set(SHADERC_LIBS
    SPIRV-Tools
  )
  
@@ -81,7 +84,7 @@ index 2cced9e..72f8846 100644
    INCLUDE_DIRS include ${shaderc_SOURCE_DIR}/libshaderc_util/include ${glslang_SOURCE_DIR}
                 ${spirv-tools_SOURCE_DIR}/include
                 ${SPIRV-Headers_SOURCE_DIR}/include
-@@ -84,8 +84,8 @@ shaderc_add_tests(
+@@ -87,8 +87,8 @@ shaderc_add_tests(
      shaderc_private)
  
  shaderc_add_tests(
@@ -92,7 +95,7 @@ index 2cced9e..72f8846 100644
    INCLUDE_DIRS include ${shaderc_SOURCE_DIR}/libshaderc_util/include ${glslang_SOURCE_DIR}
                 ${spirv-tools_SOURCE_DIR}/include
                 ${SPIRV-Headers_SOURCE_DIR}/include
-@@ -94,7 +94,7 @@ shaderc_add_tests(
+@@ -97,7 +97,7 @@ shaderc_add_tests(
      shaderc_cpp
      shaderc_private)
  
@@ -100,8 +103,8 @@ index 2cced9e..72f8846 100644
 +shaderc_combine_static_lib(shaderc_combined shaderc_static)
  
  if(SHADERC_ENABLE_INSTALL)
-   # Since shaderc_combined is defined as an imported library, we cannot use the
-@@ -127,6 +127,6 @@ if(${SHADERC_ENABLE_TESTS})
+   install(TARGETS shaderc_combined DESTINATION ${CMAKE_INSTALL_LIBDIR})
+@@ -117,6 +117,6 @@ if(${SHADERC_ENABLE_TESTS})
    add_executable(shaderc_c_smoke_test ./src/shaderc_c_smoke_test.c)
    shaderc_default_c_compile_options(shaderc_c_smoke_test)
    target_include_directories(shaderc_c_smoke_test PUBLIC ${shaderc_SOURCE_DIR}/libshaderc_util/include)

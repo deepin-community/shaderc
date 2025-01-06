@@ -3,17 +3,18 @@ Date: Tue, 13 Sep 2022 22:13:11 +0200
 Subject: Use system libraries instead of bundled third parties.
 
 Forwarded: not-needed
-Last-Update: 2023-01-22
+Last-Update: 2024-02-25
 ---
- CMakeLists.txt       | 12 ++++++------
- glslc/CMakeLists.txt |  6 +++---
- 2 files changed, 9 insertions(+), 9 deletions(-)
+ CMakeLists.txt            | 12 ++++++------
+ glslc/CMakeLists.txt      |  6 +++---
+ libshaderc/CMakeLists.txt |  3 +++
+ 3 files changed, 12 insertions(+), 9 deletions(-)
 
 diff --git a/CMakeLists.txt b/CMakeLists.txt
-index 0232f9b..42560f4 100644
+index 7bc8f5d..771eb5d 100644
 --- a/CMakeLists.txt
 +++ b/CMakeLists.txt
-@@ -130,7 +130,7 @@ endif(MSVC)
+@@ -124,7 +124,7 @@ endif(MSVC)
  
  # Configure subdirectories.
  # We depend on these for later projects, so they should come first.
@@ -22,17 +23,17 @@ index 0232f9b..42560f4 100644
  
  add_subdirectory(libshaderc_util)
  add_subdirectory(libshaderc)
-@@ -139,11 +139,11 @@ if(${SHADERC_ENABLE_EXAMPLES})
+@@ -133,11 +133,11 @@ if(${SHADERC_ENABLE_EXAMPLES})
      add_subdirectory(examples)
  endif()
  
 -add_custom_target(build-version
--  ${PYTHON_EXECUTABLE}
+-  ${Python_EXECUTABLE}
 -  ${CMAKE_CURRENT_SOURCE_DIR}/utils/update_build_version.py
 -  ${shaderc_SOURCE_DIR} ${spirv-tools_SOURCE_DIR} ${glslang_SOURCE_DIR} ${CMAKE_CURRENT_BINARY_DIR}/build-version.inc
 -  COMMENT "Update build-version.inc in the Shaderc build directory (if necessary).")
 +#add_custom_target(build-version
-+  #${PYTHON_EXECUTABLE}
++  #${Python_EXECUTABLE}
 +  #${CMAKE_CURRENT_SOURCE_DIR}/utils/update_build_version.py
 +  #${shaderc_SOURCE_DIR} ${spirv-tools_SOURCE_DIR} ${glslang_SOURCE_DIR} ${CMAKE_CURRENT_BINARY_DIR}/build-version.inc
 +  #COMMENT "Update build-version.inc in the Shaderc build directory (if necessary).")
@@ -40,15 +41,15 @@ index 0232f9b..42560f4 100644
  function(define_pkg_config_file NAME LIBS)
    add_custom_target(${NAME}-pkg-config ALL
 diff --git a/glslc/CMakeLists.txt b/glslc/CMakeLists.txt
-index c8fa6d5..74b8309 100644
+index 1277d87..7657b0e 100644
 --- a/glslc/CMakeLists.txt
 +++ b/glslc/CMakeLists.txt
 @@ -43,7 +43,7 @@ if (SHADERC_ENABLE_WGSL_OUTPUT)
  endif(SHADERC_ENABLE_WGSL_OUTPUT)
  
  target_link_libraries(glslc PRIVATE
--  glslang OSDependent OGLCompiler HLSL glslang SPIRV    # Glslang libraries
-+  HLSL glslang SPIRV MachineIndependent OSDependent OGLCompiler GenericCodeGen    # Glslang libraries
+-  glslang SPIRV    # Glslang libraries
++  glslang SPIRV SPIRV-Tools    # Glslang libraries
    $<$<BOOL:${SHADERC_ENABLE_WGSL_OUTPUT}>:libtint>      # Tint libraries, optional
    shaderc_util shaderc                                  # internal Shaderc libraries
    ${CMAKE_THREAD_LIBS_INIT})
@@ -63,3 +64,17 @@ index c8fa6d5..74b8309 100644
  
  shaderc_add_tests(
    TEST_PREFIX glslc
+diff --git a/libshaderc/CMakeLists.txt b/libshaderc/CMakeLists.txt
+index df9a88d..1f89da4 100644
+--- a/libshaderc/CMakeLists.txt
++++ b/libshaderc/CMakeLists.txt
+@@ -66,6 +66,9 @@ set(SHADERC_LIBS
+   glslang ${CMAKE_THREAD_LIBS_INIT}
+   shaderc_util
+   SPIRV # from glslang
++  MachineIndependent
++  GenericCodeGen
++  SPIRV-Tools-opt
+   SPIRV-Tools
+ )
+ 
