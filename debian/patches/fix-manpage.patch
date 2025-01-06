@@ -11,7 +11,7 @@ Last-Update: 2022-09-11
  1 file changed, 1 insertion(+), 1 deletion(-)
 
 diff --git a/glslc/README.asciidoc b/glslc/README.asciidoc
-index 9b754b8..a0afa41 100644
+index c9ffbdc..b7cbc25 100644
 --- a/glslc/README.asciidoc
 +++ b/glslc/README.asciidoc
 @@ -1,4 +1,4 @@

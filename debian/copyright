@@ -5,7 +5,7 @@ Source: https://github.com/google/shaderc/
 
 Files: *
 Copyright:
- 2015-2020 The Shaderc Authors
+ 2015-2023 The Shaderc Authors
 License: Apache-2.0
 
 Files: cmake/write_pkg_config.cmake
@@ -15,7 +15,7 @@ License: Apache-2.0
 
 Files: kokoro/*
 Copyright:
- 2017-2022 Google Inc.
+ 2017-2023 Google Inc.
 License: Apache-2.0
 
 Files: utils/git-sync-deps
@@ -24,7 +24,7 @@ License: BSD-3-clause
 
 Files: debian/*
 Copyright:
- 2022 Philippe SWARTVAGHER <phil.swart@gmx.fr>
+ 2022-2024 Philippe SWARTVAGHER <phil.swart@gmx.fr>
 License: GPL-2+
 
 License: Apache-2.0

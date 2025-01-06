@@ -1,8 +1,45 @@
-shaderc (2023.2-1deepin0) unstable; urgency=medium
+shaderc (2024.3-1) unstable; urgency=medium
 
-  * No source change upload against GCC 12.
+  * New upstream release
+  * Fix (again) lintian-override rule
+    - On my system, it says "can't break", on udd.d.org, it says "cannot break"
 
- -- Tianyu Chen <sweetyfish@deepin.org>  Fri, 20 Sep 2024 12:18:29 +0800
+ -- Philippe SWARTVAGHER <phil.swart@gmx.fr>  Sat, 28 Sep 2024 20:06:18 +0200
+
+shaderc (2024.2-1) unstable; urgency=medium
+
+  * New upstream release
+  * Fix lintian-override rule
+
+ -- Philippe SWARTVAGHER <phil.swart@gmx.fr>  Wed, 18 Sep 2024 21:40:33 +0200
+
+shaderc (2024.1-1) unstable; urgency=medium
+
+  * New upstream release
+    - Refresh patch use-system-thirdparties.patch and drop patches applied
+      upstream
+  * Add "Forwarded: not-needed" to d/patches/rename-libshaderc.patch
+  * Bump Standards-Version to 4.7.0: no change needed
+  * Refresh d/copyright
+
+ -- Philippe SWARTVAGHER <phil.swart@gmx.fr>  Tue, 28 May 2024 18:53:56 +0200
+
+shaderc (2023.8-1) unstable; urgency=medium
+
+  * New upstream release
+    - Refresh patches
+    - Add patch to fix name of Python interpreter
+    - Fix FTBFS (Closes: #1058397)
+    - Refresh d/glslc.lintian-overrides
+  * Fix linking of libshaderc.so, add autopkgtest (Closes: #1029939)
+  * Add obj-x86_64-linux-gnu to d/clean
+  * Use printf instead of echo to generate build-version.inc. Thanks to
+    Vagrant Cascadian! (Closes: #1035324)
+  * Build-Depends on pkgconf instead of pkg-config
+  * d/copyright: update copyright year
+  * Add Built-Using since we are linking against static libraries
+
+ -- Philippe SWARTVAGHER <phil.swart@gmx.fr>  Sat, 09 Mar 2024 22:52:47 +0100
 
 shaderc (2023.2-1) unstable; urgency=medium
 

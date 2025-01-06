@@ -17,6 +17,7 @@
 #include <algorithm>
 #include <sstream>
 
+#include "spirv-tools/libspirv.hpp"
 #include "spirv-tools/optimizer.hpp"
 
 namespace shaderc_util {
@@ -108,6 +109,7 @@ bool SpirvToolsAssemble(Compiler::TargetEnv env,
 bool SpirvToolsOptimize(Compiler::TargetEnv env,
                         Compiler::TargetEnvVersion version,
                         const std::vector<PassId>& enabled_passes,
+                        spvtools::OptimizerOptions& optimizer_options,
                         std::vector<uint32_t>* binary, std::string* errors) {
   errors->clear();
   if (enabled_passes.empty()) return true;
@@ -124,10 +126,15 @@ bool SpirvToolsOptimize(Compiler::TargetEnv env,
   val_opts.SetRelaxLogicalPointer(true);
   // This uses relaxed rules for pre-legalized HLSL.
   val_opts.SetBeforeHlslLegalization(true);
+  // Don't use friendly names when printing validation errors.
+  // It incurs a high startup cost whether or not there is an
+  // error. Validation failures are compiler bugs, and so they
+  // should be rare anyway.
+  val_opts.SetFriendlyNames(false);
 
-  spvtools::OptimizerOptions opt_opts;
-  opt_opts.set_validator_options(val_opts);
-  opt_opts.set_run_validator(true);
+  // Set additional optimizer options.
+  optimizer_options.set_validator_options(val_opts);
+  optimizer_options.set_run_validator(true);
 
   spvtools::Optimizer optimizer(GetSpirvToolsTargetEnv(env, version));
 
@@ -159,7 +166,8 @@ bool SpirvToolsOptimize(Compiler::TargetEnv env,
     }
   }
 
-  if (!optimizer.Run(binary->data(), binary->size(), binary, opt_opts)) {
+  if (!optimizer.Run(binary->data(), binary->size(), binary,
+                     optimizer_options)) {
     *errors = oss.str();
     return false;
   }

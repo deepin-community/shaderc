@@ -14,11 +14,6 @@
 
 cmake_minimum_required(VERSION 3.17.2)
 
-if (POLICY CMP00091)
-  # Enable MSVC Runtime Library Property
-  cmake_policy(SET CMP0091 NEW)
-endif()
-
 project(shaderc)
 enable_testing()
 
@@ -68,7 +63,7 @@ endif()
 
 option(SHADERC_ENABLE_WERROR_COMPILE "Enable passing -Werror to compiler, if available" ON)
 
-set (CMAKE_CXX_STANDARD 11)
+set (CMAKE_CXX_STANDARD 17)
 
 include(GNUInstallDirs)
 include(cmake/setup_build.cmake)
@@ -96,35 +91,30 @@ if (COMPILER_SUPPORTS_EXTRA_SEMI_WARNING)
     add_compile_options("-Wextra-semi")
 endif()
 
-find_host_package(PythonInterp 3 REQUIRED)
+find_package(Python COMPONENTS Interpreter REQUIRED)
 
 if (SHADERC_ENABLE_COPYRIGHT_CHECK)
   add_custom_target(check-copyright ALL
-    ${PYTHON_EXECUTABLE} ${CMAKE_CURRENT_SOURCE_DIR}/utils/add_copyright.py
+    ${Python_EXECUTABLE} ${CMAKE_CURRENT_SOURCE_DIR}/utils/add_copyright.py
     --check
     WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}
     COMMENT "Check copyright")
 endif()
 
 add_custom_target(add-copyright
-  ${PYTHON_EXECUTABLE} ${CMAKE_CURRENT_SOURCE_DIR}/utils/add_copyright.py
+  ${Python_EXECUTABLE} ${CMAKE_CURRENT_SOURCE_DIR}/utils/add_copyright.py
   WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}
   COMMENT "Add copyright")
 
 if(MSVC)
   option(SHADERC_ENABLE_SHARED_CRT
           "Use the shared CRT instead of the static CRT"
-          ${SHADERC_ENABLE_SHARED_CRT})
-  if (NOT SHADERC_ENABLE_SHARED_CRT)
-    # Link executables statically by replacing /MD with /MT everywhere.
-    foreach(flag_var
-        CMAKE_CXX_FLAGS CMAKE_CXX_FLAGS_DEBUG CMAKE_CXX_FLAGS_RELEASE
-        CMAKE_CXX_FLAGS_MINSIZEREL CMAKE_CXX_FLAGS_RELWITHDEBINFO)
-      if(${flag_var} MATCHES "/MD")
-        string(REGEX REPLACE "/MD" "/MT" ${flag_var} "${${flag_var}}")
-      endif(${flag_var} MATCHES "/MD")
-    endforeach(flag_var)
-  endif(NOT SHADERC_ENABLE_SHARED_CRT)
+		  OFF)
+  if (SHADERC_ENABLE_SHARED_CRT)
+    set(CMAKE_MSVC_RUNTIME_LIBRARY "MultiThreaded$<$<CONFIG:Debug>:Debug>DLL")
+  else()
+    set(CMAKE_MSVC_RUNTIME_LIBRARY "MultiThreaded$<$<CONFIG:Debug>:Debug>")
+  endif()
 endif(MSVC)
 
 
@@ -140,7 +130,7 @@ if(${SHADERC_ENABLE_EXAMPLES})
 endif()
 
 add_custom_target(build-version
-  ${PYTHON_EXECUTABLE}
+  ${Python_EXECUTABLE}
   ${CMAKE_CURRENT_SOURCE_DIR}/utils/update_build_version.py
   ${shaderc_SOURCE_DIR} ${spirv-tools_SOURCE_DIR} ${glslang_SOURCE_DIR} ${CMAKE_CURRENT_BINARY_DIR}/build-version.inc
   COMMENT "Update build-version.inc in the Shaderc build directory (if necessary).")

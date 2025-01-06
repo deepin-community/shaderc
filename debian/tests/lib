@@ -2,6 +2,13 @@
 
 set -e
 
+
+MULTIARCH=$(dpkg-architecture -qDEB_HOST_MULTIARCH)
+
+# Make sure the library is correctly linked (to prevent regression on #1029939):
+[ $(ldd -r /usr/lib/$MULTIARCH/libshaderc.so | grep -c "undefined symbol") -eq 0 ]
+
+
 cd $AUTOPKGTEST_TMP
 
 dummy_source=dummy.c
