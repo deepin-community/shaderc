@@ -91,6 +91,9 @@ Options:
                     a NaN operand, the other operand is returned. Similarly,
                     the clamp builtin will favour the non-NaN operands, as if
                     clamp were implemented as a composition of max and min.
+  -fpreserve-bindings
+                    Preserve all binding declarations, even if those bindings
+                    are not used.
   -fresource-set-binding [stage] <reg0> <set0> <binding0>
                         [<reg1> <set1> <binding1>...]
                     Explicitly sets the descriptor set and binding for
@@ -166,6 +169,7 @@ Options:
                         vulkan1.1
                         vulkan1.2
                         vulkan1.3
+                        vulkan1.4
                         vulkan          # Same as vulkan1.0
                         opengl4.5
                         opengl          # Same as opengl4.5
@@ -175,8 +179,9 @@ Options:
                     required to be supported for the target environment.
                     For example, default for vulkan1.0 is spv1.0, and
                     the default for vulkan1.1 is spv1.3,
-                    the default for vulkan1.2 is spv1.5.
-                    the default for vulkan1.3 is spv1.6.
+                    the default for vulkan1.2 is spv1.5,
+                    the default for vulkan1.3 is spv1.6,
+                    the default for vulkan1.4 is spv1.6.
                     Values are:
                         spv1.0, spv1.1, spv1.2, spv1.3, spv1.4, spv1.5, spv1.6
   --version         Display compiler version information.
@@ -365,4 +370,23 @@ MaxTransformFeedbackInterleavedComponents 64
 MaxCullDistances 8
 MaxCombinedClipAndCullDistances 8
 MaxSamples 4
+MaxMeshOutputVerticesNV 256
+MaxMeshOutputPrimitivesNV 512
+MaxMeshWorkGroupSizeX_NV 32
+MaxMeshWorkGroupSizeY_NV 1
+MaxMeshWorkGroupSizeZ_NV 1
+MaxTaskWorkGroupSizeX_NV 32
+MaxTaskWorkGroupSizeY_NV 1
+MaxTaskWorkGroupSizeZ_NV 1
+MaxMeshViewCountNV 4
+MaxMeshOutputVerticesEXT 256
+MaxMeshOutputPrimitivesEXT 256
+MaxMeshWorkGroupSizeX_EXT 128
+MaxMeshWorkGroupSizeY_EXT 128
+MaxMeshWorkGroupSizeZ_EXT 128
+MaxTaskWorkGroupSizeX_EXT 128
+MaxTaskWorkGroupSizeY_EXT 128
+MaxTaskWorkGroupSizeZ_EXT 128
+MaxMeshViewCountEXT 4
+MaxDualSourceDrawBuffersEXT 1
 """

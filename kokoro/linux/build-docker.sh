@@ -25,8 +25,9 @@ set -x # Display commands being run.
 SKIP_TESTS="False"
 BUILD_TYPE="Debug"
 
-using cmake-3.17.2
+using cmake-3.31.2
 using ninja-1.10.0
+using python-3.12
 
 if [ ! -z "$COMPILER" ]; then
     using "$COMPILER"
@@ -53,7 +54,7 @@ then
   ADDITIONAL_CMAKE_FLAGS="-DDISABLE_EXCEPTIONS=ON -DDISABLE_RTTI=ON"
 elif [ $CONFIG = "RELEASE_MINGW" ]
 then
-  ADDITIONAL_CMAKE_FLAGS="-Dgtest_disable_pthreads=ON -DCMAKE_TOOLCHAIN_FILE=$ROOT_DIR/cmake/linux-mingw-toolchain.cmake"
+  ADDITIONAL_CMAKE_FLAGS="-DCMAKE_TOOLCHAIN_FILE=$ROOT_DIR/cmake/linux-mingw-toolchain.cmake"
   SKIP_TESTS="True"
 fi
 
@@ -66,10 +67,10 @@ cd $ROOT_DIR/build
 # Invoke the build.
 BUILD_SHA=${KOKORO_GITHUB_COMMIT:-$KOKORO_GITHUB_PULL_REQUEST_COMMIT}
 echo $(date): Starting build...
-cmake -GNinja -DCMAKE_INSTALL_PREFIX=$KOKORO_ARTIFACTS_DIR/install -DSHADERC_ENABLE_SPVC=ON -DRE2_BUILD_TESTING=OFF -DCMAKE_BUILD_TYPE=$BUILD_TYPE $ADDITIONAL_CMAKE_FLAGS ..
+cmake -GNinja -DCMAKE_INSTALL_PREFIX=$KOKORO_ARTIFACTS_DIR/install -DRE2_BUILD_TESTING=OFF -DCMAKE_BUILD_TYPE=$BUILD_TYPE $ADDITIONAL_CMAKE_FLAGS ..
 
 echo $(date): Build glslang...
-ninja glslangValidator
+ninja glslang-standalone
 
 echo $(date): Build everything...
 ninja

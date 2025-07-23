@@ -25,9 +25,9 @@ set -e
 # Display commands being run.
 set -x
 
-using cmake-3.17.2
+using cmake-3.31.2
 using ninja-1.10.0
-using ndk-r21d # Sets ANDROID_NDK_HOME, pointing at the NDK's root dir
+using ndk-r27c # Sets ANDROID_NDK_HOME, pointing at the NDK's root dir
 
 cd $ROOT_DIR
 ./utils/git-sync-deps
@@ -48,8 +48,8 @@ cmake \
   -DCMAKE_TOOLCHAIN_FILE=$ANDROID_NDK_HOME/build/cmake/android.toolchain.cmake \
   -DANDROID_NDK=$ANDROID_NDK_HOME ..
 
-echo $(date): Build glslang...
-ninja glslangValidator
+echo $(date): Build glslang library...
+ninja glslang
 
 echo $(date): Build everything...
 ninja
